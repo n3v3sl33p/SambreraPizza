@@ -5,7 +5,6 @@ import Sort from "./components/Sort";
 import PizzaBlock from "./components/PizzaBlock";
 import pizzas from "../public/assets/pizzas.json";
 function App() {
-  console.log(pizzas);
   return (
     <>
       <div className="wrapper">
@@ -19,7 +18,7 @@ function App() {
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
               {pizzas.map((obj) => (
-                <PizzaBlock {...obj} />
+                <PizzaBlock {...obj} key={obj.id} />
               ))}
             </div>
           </div>
