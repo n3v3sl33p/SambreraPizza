@@ -27,5 +27,11 @@
         color: #fff;
       }
     }
+    @media (max-width: 940px) {
+      flex-wrap: wrap;
+      li {
+        margin-top: 5px;
+      }
+    }
   }
 }

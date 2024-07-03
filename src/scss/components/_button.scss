@@ -97,6 +97,9 @@
   }
 
   &--add {
+    @media (max-width: 450px) {
+      padding: 5px 5px;
+    }
     svg {
       margin-right: 2px;
     }

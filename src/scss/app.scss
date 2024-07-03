@@ -27,12 +27,28 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
+    padding-bottom: 50px;
+    @media (max-width: 1400px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 1133px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 800px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 1300px) {
+      flex-direction: column-reverse;
+      ul {
+        margin-top: 20px;
+      }
+    }
   }
 }
 
