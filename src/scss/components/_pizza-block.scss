@@ -1,13 +1,13 @@
 @import "../variables";
 
 .pizza-block {
-  width: 288px;
+  width: 300px;
   text-align: center;
-  margin-bottom: 65px;
+  // margin-bottom: 65px;
 
-  &:not(:nth-of-type(4n)) {
-    margin-right: 35px;
-  }
+  // &:not(:nth-of-type(4n)) {
+  //   margin-right: 35px;
+  // }
 
   &__image {
     width: 260px;
