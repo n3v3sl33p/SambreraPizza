@@ -6,7 +6,7 @@ const Sort = ({ orderBy, setOrderBy }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const sortIndex = useSelector((state) => state.sort.index);
   const dispatch = useDispatch();
-  console.log(sortIndex);
+
   return (
     <div className="sort">
       <div className="sort__label">

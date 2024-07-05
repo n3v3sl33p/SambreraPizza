@@ -1,8 +1,19 @@
 import React from "react";
-const PizzaBlock = ({ title, price, imageUrl, types, sizes }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { addPizza } from "../../redux/Slices/cartSlice";
+const PizzaBlock = ({ title, price, imageUrl, types, sizes, id }) => {
   const [activeType, setAcitveType] = React.useState(types[0]);
-  const [activeSizes, setAcitveSizes] = React.useState(sizes[0]);
+  const [activeSize, setAcitveSize] = React.useState(sizes[0]);
   const typesPaste = ["тонкое", "традиционное"];
+  const pizzas = useSelector((state) => state.cart.pizzas);
+  const dispatch = useDispatch();
+  const count = pizzas.reduce((sum, obj) => {
+    if (obj.id === id) {
+      sum += obj.count;
+    }
+    return sum;
+  }, 0);
+
   return (
     <div className="pizza-block__wrapper">
       <div className="pizza-block">
@@ -24,15 +35,31 @@ const PizzaBlock = ({ title, price, imageUrl, types, sizes }) => {
             {sizes.map((item) => (
               <li
                 key={item}
-                className={activeSizes === item ? "active" : ""}
-                onClick={() => setAcitveSizes(item)}
+                className={activeSize === item ? "active" : ""}
+                onClick={() => setAcitveSize(item)}
               >
                 {item} см.
               </li>
             ))}
           </ul>
         </div>
-        <div className="pizza-block__bottom">
+        <div
+          className="pizza-block__bottom"
+          onClick={() => {
+            console.log(id);
+            dispatch(
+              addPizza({
+                title,
+                price,
+                imageUrl,
+                activeSize,
+                activeType,
+                count: 1,
+                id,
+              })
+            );
+          }}
+        >
           <div className="pizza-block__price">от {price} ₽</div>
           <div className="button button--outline button--add">
             <svg
@@ -48,7 +75,7 @@ const PizzaBlock = ({ title, price, imageUrl, types, sizes }) => {
               />
             </svg>
             <span>Добавить</span>
-            <i>2</i>
+            <i>{count}</i>
           </div>
         </div>
       </div>
