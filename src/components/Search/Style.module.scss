@@ -1,0 +1,29 @@
+.root {
+  position: relative;
+}
+.input {
+  font-size: 18px;
+  padding: 8px 32px;
+  border-radius: 10px;
+  width: 300px;
+  border-color: rgba(0, 0, 0, 0.1);
+  &:focus {
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+}
+.icon {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 12px;
+  left: 5px;
+}
+
+.delete {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 12px;
+  left: 270px;
+  cursor: pointer;
+}

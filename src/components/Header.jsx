@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Search from "./Search";
 const Header = () => {
   return (
     <div className="header">
@@ -16,9 +17,10 @@ const Header = () => {
             </div>
           </div>
         </Link>
+        <Search />
 
         <div className="header__cart">
-          <a href="/cart.html" className="button button--cart">
+          <Link to={"/cart"} className="button button--cart">
             <span>520 ₽</span>
             <div className="button__delimiter"></div>
             <svg
@@ -51,7 +53,7 @@ const Header = () => {
               />
             </svg>
             <span>3</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

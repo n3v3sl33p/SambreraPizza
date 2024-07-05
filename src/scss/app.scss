@@ -17,8 +17,6 @@ body {
 }
 
 .content {
-  padding: 40px 0;
-
   &__title {
     margin: 35px 0;
   }
@@ -43,12 +41,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 40px;
     @media (max-width: 1300px) {
       flex-direction: column-reverse;
       ul {
         margin-top: 20px;
       }
     }
+  }
+  &__cart {
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -66,6 +69,7 @@ body {
 }
 
 .cart {
+  padding: 90px 290px;
   &__top {
     display: flex;
     justify-content: space-between;
@@ -76,6 +80,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 32px;
+    margin: 0;
 
     svg {
       position: relative;

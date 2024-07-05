@@ -11,6 +11,7 @@
 
     b {
       margin-right: 8px;
+      cursor: pointer;
     }
 
     span {
@@ -49,4 +50,7 @@
       }
     }
   }
+}
+.reverse {
+  transform: rotate(180deg);
 }

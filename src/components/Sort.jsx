@@ -1,13 +1,17 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { changeSort, changeDirection } from "../redux/Slices/sortSlice";
 const sortNames = ["популярности", "цене", "алфавиту"];
-const Sort = () => {
+const Sort = ({ orderBy, setOrderBy }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [sortBy, setSortBy] = React.useState("популярности");
-
+  const sortIndex = useSelector((state) => state.sort.index);
+  const dispatch = useDispatch();
+  console.log(sortIndex);
   return (
     <div className="sort">
       <div className="sort__label">
         <svg
+          className={orderBy ? "reverse" : ""}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -19,22 +23,22 @@ const Sort = () => {
             fill="#2C2C2C"
           />
         </svg>
-        <b>Сортировка по:</b>
-        <span onMouseEnter={() => setIsOpen(true)}>{sortBy}</span>
+        <b onClick={() => dispatch(changeDirection())}>Сортировка по:</b>
+        <span onMouseEnter={() => setIsOpen(true)}>{sortNames[sortIndex]}</span>
       </div>
       {isOpen && (
         <div onMouseLeave={() => setIsOpen(false)} className="sort__popup">
           <ul>
-            {sortNames.map((name) => (
+            {sortNames.map((obj, index) => (
               <li
                 onClick={() => {
-                  setSortBy(name);
+                  dispatch(changeSort(index));
                   setIsOpen(false);
                 }}
-                className={sortBy === name ? "active" : ""}
-                key={name}
+                className={sortNames[sortIndex] === obj.name ? "active" : ""}
+                key={obj}
               >
-                {name}
+                {obj}
               </li>
             ))}
           </ul>
