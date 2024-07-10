@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CartPizza from "../components/CartPizza";
 import { deleteAll } from "../redux/Slices/cartSlice";
 import { Link } from "react-router-dom";
+import CartEmpty from "../components/CartEmpty";
 function Cart() {
   const pizzas = useSelector((state) => state.cart.pizzas);
   const dispatch = useDispatch();
@@ -11,6 +12,10 @@ function Cart() {
     (sum, obj) => sum + obj.price * obj.count,
     0
   );
+
+  if (!pizzas.length) {
+    return <CartEmpty />;
+  }
 
   return (
     <div className="cart">

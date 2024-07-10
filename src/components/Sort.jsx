@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeSort, changeDirection } from "../redux/Slices/sortSlice";
 const sortNames = ["популярности", "цене", "алфавиту"];
@@ -7,6 +7,7 @@ const Sort = () => {
   const sortIndex = useSelector((state) => state.sort.index);
   const dispatch = useDispatch();
   const direction = useSelector((state) => state.sort.direction);
+
   return (
     <div className="sort">
       <div className="sort__label">

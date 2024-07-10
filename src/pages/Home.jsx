@@ -34,10 +34,27 @@ function Home() {
 
   const url = new URL("https://6682f2364102471fa4c8bd7a.mockapi.io/items");
 
+  const fetchPizzas = async () => {
+    url.searchParams.append("page", currentPage);
+    url.searchParams.append("limit", itemOnPage);
+    url.searchParams.append("sortBy", sorts[sortIndex]);
+    url.searchParams.append("order", direction ? "desc" : "asc");
+    if (filterIndex) {
+      url.searchParams.append("category", filterIndex);
+    }
+    try {
+      setIsLoading(true);
+      const response = await axios.get(url);
+      setPizzas(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   React.useEffect(() => {
     if (window.location.search) {
       const params = QueryString.parse(window.location.search.substring(1));
-      console.log("первый рендер + парсинг", params);
       dispatch(changeCategory(params.filterIndex));
       dispatch(setDirection(params.direction));
       dispatch(changePage(params.currentPage));
@@ -47,24 +64,6 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    url.searchParams.append("page", currentPage);
-    url.searchParams.append("limit", itemOnPage);
-    url.searchParams.append("sortBy", sorts[sortIndex]);
-    url.searchParams.append("order", direction ? "desc" : "asc");
-    if (filterIndex) {
-      url.searchParams.append("category", filterIndex);
-    }
-    const fetchPizzas = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get(url);
-        setPizzas(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    console.log("fetch");
     if (!isSearch.current) {
       fetchPizzas();
     }
