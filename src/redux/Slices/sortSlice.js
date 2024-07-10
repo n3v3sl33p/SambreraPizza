@@ -10,13 +10,16 @@ export const sortSlice = createSlice({
   initialState,
   reducers: {
     changeSort: (state, action) => {
-      state.index = action.payload;
+      state.index = Number(action.payload);
     },
     changeDirection: (state) => {
       state.direction = !state.direction;
     },
+    setDirection: (state, action) => {
+      state.direction = Number(action.payload);
+    },
   },
 });
-export const { changeSort, changeDirection } = sortSlice.actions;
+export const { changeSort, changeDirection, setDirection } = sortSlice.actions;
 
 export default sortSlice.reducer;

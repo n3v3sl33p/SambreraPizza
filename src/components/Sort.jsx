@@ -2,16 +2,16 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeSort, changeDirection } from "../redux/Slices/sortSlice";
 const sortNames = ["популярности", "цене", "алфавиту"];
-const Sort = ({ orderBy, setOrderBy }) => {
+const Sort = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const sortIndex = useSelector((state) => state.sort.index);
   const dispatch = useDispatch();
-
+  const direction = useSelector((state) => state.sort.direction);
   return (
     <div className="sort">
       <div className="sort__label">
         <svg
-          className={orderBy ? "reverse" : ""}
+          className={direction ? "reverse" : ""}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -29,16 +29,16 @@ const Sort = ({ orderBy, setOrderBy }) => {
       {isOpen && (
         <div onMouseLeave={() => setIsOpen(false)} className="sort__popup">
           <ul>
-            {sortNames.map((obj, index) => (
+            {sortNames.map((string, index) => (
               <li
                 onClick={() => {
                   dispatch(changeSort(index));
                   setIsOpen(false);
                 }}
-                className={sortNames[sortIndex] === obj.name ? "active" : ""}
-                key={obj}
+                className={sortNames[sortIndex] === string ? "active" : ""}
+                key={string}
               >
-                {obj}
+                {string}
               </li>
             ))}
           </ul>
