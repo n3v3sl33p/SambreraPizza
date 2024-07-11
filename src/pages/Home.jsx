@@ -3,7 +3,6 @@ import Categories from "../components/Categories";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlock from "../components/PizzaBlock/index";
 import Sort from "../components/Sort";
-import axios from "axios";
 import { SearchContext } from "../App";
 import { useSelector, useDispatch } from "react-redux";
 import Pagination from "react-js-pagination";
@@ -12,18 +11,18 @@ import { changeCategory } from "../redux/Slices/filterSlice";
 import { changeSort, setDirection } from "../redux/Slices/sortSlice";
 import QueryString from "qs";
 import { useNavigate } from "react-router-dom";
+import { fetchPizzas } from "../redux/Slices/pizzasSlice";
 
-const sorts = ["rating", "price", "title"];
+import ErrorPage from "./ErrorPage";
+
 const itemOnPage = 4;
 
 function Home() {
-  const [pizzas, setPizzas] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
   const { searchValue } = React.useContext(SearchContext);
-
+  const { items, status } = useSelector((state) => state.pizzas);
   const filterIndex = useSelector((state) => state.filter.index);
   const sortIndex = useSelector((state) => state.sort.index);
   const direction = useSelector((state) => state.sort.direction);
@@ -31,26 +30,6 @@ function Home() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const url = new URL("https://6682f2364102471fa4c8bd7a.mockapi.io/items");
-
-  const fetchPizzas = async () => {
-    url.searchParams.append("page", currentPage);
-    url.searchParams.append("limit", itemOnPage);
-    url.searchParams.append("sortBy", sorts[sortIndex]);
-    url.searchParams.append("order", direction ? "desc" : "asc");
-    if (filterIndex) {
-      url.searchParams.append("category", filterIndex);
-    }
-    try {
-      setIsLoading(true);
-      const response = await axios.get(url);
-      setPizzas(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   React.useEffect(() => {
     if (window.location.search) {
@@ -65,7 +44,8 @@ function Home() {
 
   React.useEffect(() => {
     if (!isSearch.current) {
-      fetchPizzas();
+      console.log("вызов");
+      dispatch(fetchPizzas({ currentPage, sortIndex, direction, filterIndex }));
     }
     isSearch.current = false;
   }, [sortIndex, filterIndex, direction, currentPage]);
@@ -83,6 +63,11 @@ function Home() {
 
     isMounted.current = true;
   }, [sortIndex, filterIndex, direction, currentPage]);
+
+  if (status === "error") {
+    return <ErrorPage />;
+  }
+
   return (
     <div className="container">
       <div className="content__top">
@@ -91,9 +76,9 @@ function Home() {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
-        {isLoading
+        {status === "loading"
           ? [...new Array(10)].map((_, index) => <Skeleton key={index} />)
-          : pizzas
+          : items
               .filter((obj) =>
                 obj.title
                   .toLocaleLowerCase()
