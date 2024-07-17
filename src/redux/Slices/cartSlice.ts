@@ -1,14 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
+export type PizzaCartType = {
+  imageUrl: string;
+  title: string;
+  price: number;
+  activeType: number;
+  activeSize: number;
+  count: number;
+  id: number;
+};
+interface CartSliceState {
+  pizzas: PizzaCartType[];
+}
 
-const initialState = {
-  pizzas: [],
+const initialState: CartSliceState = {
+  pizzas: JSON.parse(localStorage.getItem("cart") || "[]"),
 };
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addPizza: (state, action) => {
+    addPizza: (state, action: PayloadAction<PizzaCartType>) => {
       const index = state.pizzas.findIndex(
         (obj) =>
           obj.title === action.payload.title &&
@@ -22,17 +35,17 @@ export const cartSlice = createSlice({
         state.pizzas.push(action.payload);
       }
     },
-    deletePizza: (state, action) => {
+    deletePizza: (state, action: PayloadAction<number>) => {
       const index = state.pizzas.findIndex((obj) => obj.id === action.payload);
       state.pizzas.splice(index, 1);
     },
     deleteAll: (state) => {
       state.pizzas = [];
     },
-    increment: (state, action) => {
+    increment: (state, action: PayloadAction<number>) => {
       state.pizzas[action.payload].count += 1;
     },
-    decrement: (state, action) => {
+    decrement: (state, action: PayloadAction<number>) => {
       if (state.pizzas[action.payload].count === 1) {
         state.pizzas.splice(action.payload, 1);
       } else {
@@ -41,6 +54,8 @@ export const cartSlice = createSlice({
     },
   },
 });
+
+export const selectCart = (state: RootState) => state.cart.pizzas;
 
 export const { addPizza, deletePizza, deleteAll, increment, decrement } =
   cartSlice.actions;

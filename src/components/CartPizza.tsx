@@ -1,9 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { deletePizza, increment, decrement } from "../redux/Slices/cartSlice";
+import { PizzaCartType } from "../redux/Slices/cartSlice";
 const types = ["тонкое", "традиционное"];
 
-function CartPizza({
+const CartPizza: React.FC<PizzaCartType> = ({
   imageUrl,
   title,
   price,
@@ -12,7 +13,7 @@ function CartPizza({
   count,
   id,
   index,
-}) {
+}) => {
   const dispatch = useDispatch();
 
   return (
@@ -97,6 +98,6 @@ function CartPizza({
       </div>
     </div>
   );
-}
+};
 
 export default CartPizza;

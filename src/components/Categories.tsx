@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCategory } from "../redux/Slices/filterSlice";
+import { changeCategory, SelectFilter } from "../redux/Slices/filterSlice";
+
 const categoriesList = [
   "Все",
   "Мясные",
@@ -10,13 +11,13 @@ const categoriesList = [
   "Закрытые",
 ];
 const Categories = () => {
-  const filterIndex = useSelector((state) => state.filter.index);
+  const filterIndex: number = useSelector(SelectFilter);
   const dispatch = useDispatch();
 
   return (
     <div className="categories">
       <ul>
-        {categoriesList.map((item, index) => (
+        {categoriesList.map((item, index: number) => (
           <li
             className={filterIndex === index ? "active" : " "}
             key={index}

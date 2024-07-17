@@ -1,11 +1,24 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPizza } from "../../redux/Slices/cartSlice";
-const PizzaBlock = ({ title, price, imageUrl, types, sizes, id }) => {
-  const [activeType, setAcitveType] = React.useState(types[0]);
-  const [activeSize, setAcitveSize] = React.useState(sizes[0]);
+import {
+  addPizza,
+  PizzaCartType,
+  selectCart,
+} from "../../redux/Slices/cartSlice";
+import { PizzaType } from "../../redux/Slices/pizzasSlice";
+
+const PizzaBlock = ({
+  title,
+  price,
+  imageUrl,
+  types,
+  sizes,
+  id,
+}: PizzaType) => {
+  const [activeType, setAcitveType] = React.useState<number>(types[0]);
+  const [activeSize, setAcitveSize] = React.useState<number>(sizes[0]);
   const typesPaste = ["тонкое", "традиционное"];
-  const pizzas = useSelector((state) => state.cart.pizzas);
+  const pizzas: PizzaCartType[] = useSelector(selectCart);
   const dispatch = useDispatch();
   const count = pizzas.reduce((sum, obj) => {
     if (obj.id === id) {
@@ -46,7 +59,6 @@ const PizzaBlock = ({ title, price, imageUrl, types, sizes, id }) => {
         <div
           className="pizza-block__bottom"
           onClick={() => {
-            console.log(id);
             dispatch(
               addPizza({
                 title,

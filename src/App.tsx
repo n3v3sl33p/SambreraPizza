@@ -2,11 +2,16 @@ import React from "react";
 import "./scss/app.scss";
 import Header from "./components/Header";
 import { Outlet } from "react-router-dom";
+export type SearchContextType = {
+  searchValue: string;
+  setSearchValue: (value: string) => void;
+};
+export const SearchContext = React.createContext<SearchContextType | null>(
+  null
+);
 
-export const SearchContext = React.createContext({});
-
-function App() {
-  const [searchValue, setSearchValue] = React.useState("");
+const App: React.FC = () => {
+  const [searchValue, setSearchValue] = React.useState<string>("");
 
   return (
     <>
@@ -15,11 +20,11 @@ function App() {
           <Header />
           <div className="content"></div>
 
-          <Outlet searchName={searchValue} />
+          <Outlet />
         </div>
       </SearchContext.Provider>
     </>
   );
-}
+};
 
 export default App;

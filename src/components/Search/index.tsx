@@ -1,15 +1,21 @@
 import React from "react";
-import { SearchContext } from "../../App";
+import { SearchContext, SearchContextType } from "../../App";
 import styles from "./Style.module.scss";
 import debounce from "lodash.debounce";
 function Search() {
-  const [value, setValue] = React.useState("");
-  const { setSearchValue } = React.useContext(SearchContext);
-  const inputRef = React.useRef();
+  const [value, setValue] = React.useState<string>("");
+  const context = React.useContext<SearchContextType | null>(SearchContext);
+  if (!context) {
+    throw new Error("Search must be used within a SearchProvider");
+  }
+
+  const { setSearchValue } = context;
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const updateSearch = React.useCallback(
     debounce((str) => setSearchValue(str), 1000),
     []
   );
+
   return (
     <div className={styles.root}>
       <svg
@@ -42,7 +48,7 @@ function Search() {
         onClick={() => {
           setValue("");
           setSearchValue("");
-          inputRef.current.focus();
+          inputRef.current?.focus();
         }}
         className={styles.delete}
         version="1.1"

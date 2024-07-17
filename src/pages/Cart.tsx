@@ -1,11 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CartPizza from "../components/CartPizza";
-import { deleteAll } from "../redux/Slices/cartSlice";
+import {
+  deleteAll,
+  PizzaCartType,
+  selectCart,
+} from "../redux/Slices/cartSlice";
 import { Link } from "react-router-dom";
 import CartEmpty from "../components/CartEmpty";
-function Cart() {
-  const pizzas = useSelector((state) => state.cart.pizzas);
+const Cart: React.FC = () => {
+  const pizzas: PizzaCartType[] = useSelector(selectCart);
   const dispatch = useDispatch();
   const countPizzas = pizzas.reduce((sum, obj) => sum + obj.count, 0);
   const totalPrice = pizzas.reduce(
@@ -13,10 +17,12 @@ function Cart() {
     0
   );
 
+  React.useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(pizzas));
+  }, [pizzas]);
   if (!pizzas.length) {
     return <CartEmpty />;
   }
-
   return (
     <div className="cart">
       <div className="cart__top">
@@ -140,6 +146,6 @@ function Cart() {
       </div>
     </div>
   );
-}
+};
 
 export default Cart;

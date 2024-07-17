@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeSort, changeDirection } from "../redux/Slices/sortSlice";
+import {
+  changeSort,
+  changeDirection,
+  SelectSort,
+} from "../redux/Slices/sortSlice";
 const sortNames = ["популярности", "цене", "алфавиту"];
 const Sort = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const sortIndex = useSelector((state) => state.sort.index);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const { sortIndex, direction } = useSelector(SelectSort);
   const dispatch = useDispatch();
-  const direction = useSelector((state) => state.sort.direction);
 
   return (
     <div className="sort">

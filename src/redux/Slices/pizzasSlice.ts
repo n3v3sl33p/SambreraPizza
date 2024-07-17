@@ -1,28 +1,44 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "../store";
 
 export const fetchPizzas = createAsyncThunk(
   "pizzas/fetchPizzasStatus",
-  async (params) => {
+  async (params: Record<string, number>) => {
     const { currentPage, sortIndex, direction, filterIndex } = params;
-
+    const itemOnPage = "4";
     const url = new URL("https://6682f2364102471fa4c8bd7a.mockapi.io/items");
-    url.searchParams.append("page", currentPage);
-    url.searchParams.append("limit", 4); // Пример ограничения количества элементов на странице
+    url.searchParams.append("page", `${currentPage}`);
+    url.searchParams.append("limit", itemOnPage);
     url.searchParams.append("sortBy", ["rating", "price", "title"][sortIndex]);
     url.searchParams.append("order", direction ? "desc" : "asc");
 
     if (filterIndex) {
-      url.searchParams.append("category", filterIndex);
+      url.searchParams.append("category", `${filterIndex}`);
     }
-    console.log("aboba");
-    console.log(url);
-    const response = await axios.get(url);
-    return response.data;
+    const { data } = await axios.get<PizzaType[]>(`${url}`);
+    return data;
   }
 );
 
-const initialState = {
+export type PizzaType = {
+  imageUrl: string;
+  title: string;
+  price: number;
+  types: number[];
+  sizes: number[];
+  category: number;
+  rating: number;
+  count: number;
+  id: number;
+  index: number;
+};
+interface PizzasSliceState {
+  items: PizzaType[];
+  status: string;
+}
+
+const initialState: PizzasSliceState = {
   items: [],
   status: "",
 };
@@ -48,5 +64,5 @@ const pizzasSlice = createSlice({
       });
   },
 });
-
+export const SelectPizza = (state: RootState) => state.pizzas;
 export default pizzasSlice.reducer;
